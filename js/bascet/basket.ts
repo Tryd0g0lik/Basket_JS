@@ -20,50 +20,81 @@ class Basket extends Good {
         return JSON.parse(fs.readFileSync(path))
 
     }
+
+    removeUnavailable(arr) {
+         /*
+        Delete an array element if it has  the proporties 'avaibles = "false'
+        For the calculate  we can take only if a product has the properties 'available = "false'
+         */
+        try {
+            console.clear()
+            let new_arr = [];
+            let tr = true;
+            let __i;
+
+            while (tr){
+                if ((arr).length === 0){
+
+                    tr = false
+                    return new_arr;
+                }
+
+                if (((arr)[0].avaibles === 'false' && (arr).length !== 0)){
+                    (arr).shift()
+
+
+                } else if (((arr)[0].avaibles === 'true' && (arr).length !== 0)){
+                    new_arr.push(arr[0])
+                    arr.shift()
+
+                }
+
+            }
+
+        }
+        catch (e) {
+            console.log(`ERRORE in  Basket a "removeUnavailable". Message: ${e.message}`);
+            console.log(`ERRORE in  Basket a "removeUnavailable". Stack: ${e.stack}`);
+        }
+    }
     totalAmount(path:string|null = null):string| number| Array<any>|void{
         /*
         The total price calculate;
          */
         let __i: number;
 
-        try {
+         try {
             if (path !== null) {
                 let __fBasket = this.openFile(path);
+                fs.close
 
+                __fBasket["bascetCount"] = this.removeUnavailable(__fBasket["bascetCount"]);
+
+                console.log(__fBasket["bascetCount"]);
                 for (__i = 0; __i < (__fBasket["bascetCount"]).length; __i++) {
-
                     this.totalprice = (__fBasket["bascetCount"][__i].prices *
                         __fBasket["bascetCount"][__i].amount);
                     __fBasket["bascetCount"][__i]["totalprice"] = this.totalprice;
-
                 }
-                fs.writeFile("./totalAmountBasket.json",
-                        JSON.stringify({"totalPrices" : __fBasket["bascetCount"]}),
-                        "utf-8", (err)=> {
-                            if (err) {
-                                console.log(`WriteFile ERRORE in  Basket a "totalAmount". Message: ${err.message} `);
-                                console.log(`WriteFile ERRORE in  Basket a "totalAmount". Stack: ${err.stack}`);
-                            } else {
-                                console.log("Rewrite  the 'totalAmountBasket' file! Ok");
-                            }
-
-                        });
-
-
-                    for (__i = 0; __i < (__fBasket["bascetCount"]).length; __i++){
-
-                        this.totalpriceALL = this.totalpriceALL + __fBasket["bascetCount"][__i].totalprice
-
+                fs.writeFile("./totalAmountBasket.json", JSON.stringify({ "totalPrices": __fBasket["bascetCount"] }), "utf-8", (err) => {
+                    if (err) {
+                        console.log(`WriteFile ERRORE in  Basket a "totalAmount". Message: ${err.message} `);
+                        console.log(`WriteFile ERRORE in  Basket a "totalAmount". Stack: ${err.stack}`);
                     }
-
-                    return ` ${this.totalpriceALL} рубля;`
-
-
+                    else {
+                        console.log("Rewrite  the 'totalAmountBasket' file! Ok");
+                    }
+                });
+                for (__i = 0; __i < (__fBasket["bascetCount"]).length; __i++) {
+                    this.totalpriceALL = this.totalpriceALL + __fBasket["bascetCount"][__i].totalprice;
+                }
+                return ` ${this.totalpriceALL} рубля;`;
             }
-            return
-        } catch (e) {
+            return;
+        }
+        catch (e) {
             console.log(`ERRORE in  Basket a "totalAmount". Message: ${e.message}`);
-            console.log(`ERRORE in  Basket a "totalAmount". Stack: ${e.stack }`);
+            console.log(`ERRORE in  Basket a "totalAmount". Stack: ${e.stack}`);
         }
     }
     totalSum(path:string){
@@ -72,20 +103,20 @@ class Basket extends Good {
          */
 
         try {
-            let countItems: string| number| void = 0;
-
+            let countItems = 0;
             if (path) {
-                let __f: any = this.openFile(path);
+                let __fBasket = JSON.parse(fs.readFileSync(path));
 
-                for (let __i = 0; __i < __f["totalPrices"].length; __i++) {
-                    countItems = countItems + Number(__f["totalPrices"][__i].amount);
+
+                for (let __i = 0; __i < __fBasket["totalPrices"].length; __i++) {
+                    countItems = countItems + Number(__fBasket["totalPrices"][__i].amount);
                 }
-
-                return `Кол-во: ${countItems} шт.`
+                return `Кол-во: ${countItems} шт.`;
             }
-        } catch (e){
+        }
+        catch (e) {
             console.log(`ERRORE in  Basket a "totalSum". Message: ${e.message}`);
-            console.log(`ERRORE in  Basket a "totalSum". Stack: ${e.stack }`);
+            console.log(`ERRORE in  Basket a "totalSum". Stack: ${e.stack}`);
         }
     }
 
@@ -114,5 +145,7 @@ class Basket extends Good {
 
 }
 const prod = new Basket()
-console.log(prod.totalAmount("./bascetAmount.json"));
+console.clear()
+// console.log(prod.totalAmount("./bascetAmount.json")); //
+
 console.log(prod.totalSum("./totalAmountBasket.json"));

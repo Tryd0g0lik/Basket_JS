@@ -1,6 +1,7 @@
 const { Good } = require("../good/goodJS");
 const fs = require("fs");
 class Basket extends Good {
+
     constructor(id = 0, names = null, descriptions = null, sizes = 0, prices = 0, availbles = false) {
         super(id, names, descriptions, sizes, prices, availbles);
         this.totalprice = null;
@@ -13,14 +14,56 @@ class Basket extends Good {
          */
         return JSON.parse(fs.readFileSync(path));
     }
+    removeUnavailable(arr) {
+         /*
+        Delete an array element if it has  the proporties 'avaibles = "false'
+        For the calculate  we can take only if a product has the properties 'available = "true'
+         */
+        try {
+            console.clear()
+            let new_arr = [];
+            let tr = true;
+            let __i;
+
+            while (tr){
+                if ((arr).length === 0){
+
+                    tr = false
+                    return new_arr;
+                }
+
+                if (((arr)[0].avaibles === 'false' && (arr).length !== 0)){
+                    (arr).shift()
+
+
+                } else if (((arr)[0].avaibles === 'true' && (arr).length !== 0)){
+                    new_arr.push(arr[0])
+                    arr.shift()
+
+                }
+
+            }
+
+        }
+        catch (e) {
+            console.log(`ERRORE in  Basket a "removeUnavailable". Message: ${e.message}`);
+            console.log(`ERRORE in  Basket a "removeUnavailable". Stack: ${e.stack}`);
+        }
+    }
     totalAmount(path = null) {
         /*
         The total price calculate;
          */
+
         let __i;
         try {
             if (path !== null) {
                 let __fBasket = this.openFile(path);
+                fs.close
+
+                __fBasket["bascetCount"] = this.removeUnavailable(__fBasket["bascetCount"]);
+
+                console.log(__fBasket["bascetCount"]);
                 for (__i = 0; __i < (__fBasket["bascetCount"]).length; __i++) {
                     this.totalprice = (__fBasket["bascetCount"][__i].prices *
                         __fBasket["bascetCount"][__i].amount);
@@ -54,9 +97,11 @@ class Basket extends Good {
         try {
             let countItems = 0;
             if (path) {
-                let __f = this.openFile(path);
-                for (let __i = 0; __i < __f["totalPrices"].length; __i++) {
-                    countItems = countItems + Number(__f["totalPrices"][__i].amount);
+                let __fBasket = JSON.parse(fs.readFileSync(path));
+
+
+                for (let __i = 0; __i < __fBasket["totalPrices"].length; __i++) {
+                    countItems = countItems + Number(__fBasket["totalPrices"][__i].amount);
                 }
                 return `Кол-во: ${countItems} шт.`;
             }
@@ -84,6 +129,8 @@ class Basket extends Good {
     }
 }
 const prod = new Basket();
-// console.log(prod.totalAmount("./bascetAmount.json"));
-// console.log(prod.totalSum("./totalAmountBasket.json"));
-console.log(prod.clear("./totalAmountBasket.json"));
+console.clear()
+// console.log(prod.totalAmount("./bascetAmount.json")); //
+
+console.log(prod.totalSum("./totalAmountBasket.json"));
+//

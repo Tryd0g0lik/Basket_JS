@@ -11,6 +11,9 @@ class BasketGood extends Good {
         return JSON.parse(fs.readFileSync("./bascetAmount.json"));
     }
     bascet(i, count) {
+        /*
+        The amount items insert
+         */
         this.amount = count;
         try {
             let __f = JSON.parse(fs.readFileSync("./root.json"));
@@ -27,7 +30,7 @@ class BasketGood extends Good {
                                 console.log(`ERRORE 'bascet' Stack: ${err.stack}`);
                             }
                             else {
-                                console.log("Rewrite the file!");
+                                console.log("Rewrite the file! Ok");
                             }
                         });
                     }
@@ -43,7 +46,7 @@ class BasketGood extends Good {
         }
     }
 }
-// console.clear();
-// const prod = new BasketGood();
-// console.log(prod.bascet(2, 3));
-module.exports = {BasketGood}
+console.clear();
+const prod = new BasketGood();
+console.log(prod.bascet(5, 3));
+module.exports = { BasketGood };

@@ -66,8 +66,8 @@ class BasketGood extends Good{
 
 
 
-// console.clear()
-// const prod = new  BasketGood();
-// console.log(prod.bascet(5, 3))
+console.clear()
+const prod = new  BasketGood();
+console.log(prod.bascet(5, 3))
 
 module.exports = {BasketGood}
