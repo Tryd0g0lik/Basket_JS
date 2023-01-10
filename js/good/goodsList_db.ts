@@ -50,7 +50,12 @@ class GoodsList extends Good{
          */
     addProducts(__newData: string | object = null,
                 path:string ): string | object {
-        // добавление товара в базу
+        /*
+        TODO: The position will be added into catalog.
+        Params: -   '__newData' this's object, new position for a catalog.
+                    'path' is a reference in catalog.
+         */
+
 
         let fs = require('fs');
         let __f:object = super.getFile(path)

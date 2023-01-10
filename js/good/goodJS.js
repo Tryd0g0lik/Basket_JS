@@ -6,13 +6,16 @@ class Good extends Main {
     }
     /*
     'setAvailableRemove'    - The product activation  been made through a way to replace  the value 'valueBoolen' on
-                                the 'true'. 'valueBoolen' be default.
-                            - The product find can by the 'id' or 'name' product.
+                                the 'true'. 'valueBoolen' be default is 'false'.
+                            - The search product can by the 'id' or 'name' product.
                             - the "remove" function works if an attribute value change  of 'false' to 'true' /=> 'remove=true' .
                                 Work go with a JSON files and instead of 'remove()', 'replace()' is used/
 
      */
     getFile(path = null) {
+         /*
+         read the file.
+          */
         let __data = fs.readFileSync(path);
         return JSON.parse(__data);
     }
@@ -31,7 +34,7 @@ class Good extends Main {
                             if (remove == false) {
                                 __arr[__ind].avaibles = String(__arr[__ind].avaibles).replace(String(__arr[__ind].avaibles), String(valueBoolen));
                             }
-                            else {
+                            else { // if 'remove=true' then been the position delete.
                                 (__arr).splice(__ind, 1);
                             }
                             fs.writeFileSync('./root.json', JSON.stringify({ "products": __arr }), 'utf-8'), (err) => {

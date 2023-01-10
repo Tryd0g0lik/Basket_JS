@@ -13,7 +13,12 @@ class GoodsList extends Good {
         this.lenResponse = null;
     }
     addProducts(__newData = null, path) {
-        // добавление товара в базу
+        /*
+        TODO: The position will be added into catalog.
+        Params: -   '__newData' this's object, new position for a catalog.
+                    'path' is a reference in catalog.
+         */
+
         let fs = require('fs');
         let __f = super.getFile(path);
         let __len = f['products'].length;
